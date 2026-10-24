@@ -198,7 +198,8 @@ details.faq p { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(
 .prose { max-width: 760px; margin: 0 auto; color: var(--ink-muted); font-size: 17px; line-height: 1.7; }
 .prose h2 { margin: 36px 0 10px; font-size: 24px; line-height: 1.25; color: var(--ink); }
 .prose p { margin: 0 0 14px; }
-.prose ul { margin: 0 0 14px; padding-left: 22px; }
+.prose ul, .prose ol { margin: 0 0 14px; padding-left: 22px; }
+.prose h3 { margin: 24px 0 8px; font-size: 19px; color: var(--ink); }
 .prose li { margin: 6px 0; }
 .prose strong { color: var(--ink); }
 .notice { padding: 14px 16px; border-radius: var(--radius-md); background: var(--accent-soft); color: var(--ink); font-size: 14px; line-height: 1.5; }
