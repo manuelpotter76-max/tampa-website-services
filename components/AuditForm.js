@@ -25,7 +25,10 @@ export default function AuditForm({ id = 'audit', full = false }) {
   const [err, setErr] = useState('');
   const [res, setRes] = useState(null);
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [sent, setSent] = useState(false);
+  const [mailed, setMailed] = useState(false);
+  const [sending, setSending] = useState(false);
 
   async function run(e) {
     e.preventDefault();
@@ -40,9 +43,13 @@ export default function AuditForm({ id = 'audit', full = false }) {
 
   async function unlock(e) {
     e.preventDefault();
-    const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: 'audit', email, website: res?.url, page: path, meta: { overall: res?.overall, scores: res?.scores } }) });
-    const j = await r.json().catch(() => ({}));
-    if (j.ok) setSent(true); else setErr(j.error || 'Could not send. Try again?');
+    setErr(''); setSending(true);
+    try {
+      const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: 'audit', auditId: res?.auditId, email, phone, website: res?.url, page: path }) });
+      const j = await r.json().catch(() => ({}));
+      if (j.ok) { setSent(true); setMailed(!!j.reportSent); } else setErr(j.error || 'Could not send. Try again?');
+    } catch { setErr('Could not send. Try again?'); }
+    setSending(false);
   }
 
   return (
@@ -86,16 +93,17 @@ export default function AuditForm({ id = 'audit', full = false }) {
               ))}
             </ul>
           )}
-          {!sent && !full && res.findings.length > 3 && (
-            <form onSubmit={unlock} className="stack gap-2">
-              <label htmlFor={id + '-email'} className="small" style={{ fontWeight: 500 }}>Email me the full report ({res.findings.length - 3} more findings)</label>
-              <div className="row gap-3">
-                <input id={id + '-email'} className="input" style={{ flex: '1 1 220px' }} type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@business.com" />
-                <button className="btn btn-secondary" type="submit">Unlock the report</button>
+          {!sent && (
+            <form onSubmit={unlock} className="card-raised stack gap-3" style={{ padding: 20 }}>
+              <p style={{ fontWeight: 600 }}>{!full && res.findings.length > 3 ? `Email me the full report (${res.findings.length - 3} more fixes)` : 'Email me this report'}</p>
+              <div className="grid" style={{ '--min': '200px', gap: 12 }}>
+                <label className="label">Email<input className="input" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@business.com" /></label>
+                <label className="label">Phone <span className="hint">Optional. Want Manny to walk you through it?</span><input className="input" type="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(813) 555-0123" /></label>
               </div>
+              <button className="btn btn-secondary" type="submit" disabled={sending} style={{ alignSelf: 'flex-start' }}>{sending ? 'Sending...' : 'Send my report'}</button>
             </form>
           )}
-          {sent && <p className="small" role="status">Got it. Manny will send the full report and a few quick fixes.</p>}
+          {sent && <p className="notice" role="status">{mailed ? 'Sent. Check your inbox for the full report.' : 'Got it. Manny will send your full report shortly.'}{phone ? ' He\'ll give you a call to walk through it.' : ''}</p>}
           <div className="row gap-3">
             <a className="btn btn-primary" href={SITE.bookingUrl}>Book a call to fix these</a>
           </div>

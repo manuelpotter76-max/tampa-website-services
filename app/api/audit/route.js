@@ -131,6 +131,6 @@ export async function POST(req) {
   const [ps, h] = await Promise.all([pagespeed(url), inspect(url)]);
   if (!h.reachable && !ps) return Response.json({ ok: false, error: 'We couldn\'t load that site. Is it online?' }, { status: 422 });
   const result = score(ps, h);
-  await insertRow('audits', { url, overall: result.overall, scores: { ...result.scores, pagespeed: ps }, findings: result.findings });
-  return Response.json({ ok: true, url, ...result, metrics: ps ? { lcp: ps.lcp, cls: ps.cls, tbt: ps.tbt } : null, title: h.title || null });
+  const saved = await insertRow('audits', { url, overall: result.overall, scores: { ...result.scores, pagespeed: ps }, findings: result.findings, meta: { title: h.title || null } }, { returnRow: true });
+  return Response.json({ ok: true, auditId: saved.row?.id || null, url, ...result, metrics: ps ? { lcp: ps.lcp, cls: ps.cls, tbt: ps.tbt } : null, title: h.title || null });
 }

@@ -1,5 +1,6 @@
 import { SMS_CONSENT_TEXT as SMS_TEXT } from '@/lib/consent';
-import { insertRow, notifyLead, rateLimited, clientIp } from '@/lib/db';
+import { insertRow, notifyLead, rateLimited, clientIp, getRow, updateRow, sendEmail } from '@/lib/db';
+import { auditReportEmail, leadAlert } from '@/lib/report';
 
 export const runtime = 'nodejs';
 
@@ -27,7 +28,24 @@ export async function POST(req) {
     page: clean(body.page, 300),
     meta: typeof body.meta === 'object' && body.meta ? body.meta : {},
   };
+  // Audit leads: load the real audit from the database (never trust scores sent by the browser),
+  // email the visitor their report once, and give Manny the score with the alert.
+  let audit = null, reportSent = false;
+  if (source === 'audit' && body.auditId) {
+    audit = await getRow('audits', body.auditId);
+    if (audit) {
+      row.website = row.website || audit.url;
+      row.meta = { auditId: audit.id, overall: audit.overall };
+      if (email && !audit.report_sent_at) {
+        reportSent = await sendEmail({ to: email, replyTo: process.env.LEAD_NOTIFY_EMAIL, ...auditReportEmail(audit) });
+      }
+      await updateRow('audits', audit.id, { email: email || audit.email, ...(reportSent ? { report_sent_at: new Date().toISOString() } : {}) });
+    }
+  }
+
   const res = await insertRow('leads', row);
-  await notifyLead(`New ${source} lead: ${name || email || phone}`, JSON.stringify(row, null, 2));
-  return Response.json({ ok: true, stored: res.stored });
+  const who = name || email || phone;
+  const subject = source === 'audit' && audit ? `Audit lead: ${who} scored ${audit.overall}/100${phone ? ' (call them)' : ''}` : `New ${source} lead: ${who}`;
+  await notifyLead(subject, leadAlert(row, audit));
+  return Response.json({ ok: true, stored: res.stored, reportSent });
 }
