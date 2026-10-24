@@ -4,7 +4,7 @@ import { SITE } from '@/lib/site';
 
 export const metadata = {
   title: 'About Tampa Website Services, Ybor City',
-  description: 'Tampa Website Services is a Ybor City web design and AI company led by Manny Potter, with 15+ years building websites for Tampa Bay businesses.',
+  description: 'Tampa Website Services is a Ybor City web design and AI company led by Manny Potter, with 15+ years in digital marketing, lead generation and SEO.',
   alternates: { canonical: '/about-tampa-website-services' },
 };
 
@@ -38,16 +38,21 @@ export default function About() {
 
       <section className="container section stack gap-6 narrow" aria-labelledby="why-h">
         <h2 id="why-h" className="h2">Why I do this</h2>
-        {/* TODO: replace with Manny's own paragraphs */}
-        <p className="muted" style={{ fontSize: 17 }}>For more than 15 years I&apos;ve built websites for Tampa Bay businesses. The pattern never changes: the business owner is out doing the work, the phone rings, and nobody answers. That lead goes to whoever picks up first.</p>
-        <p className="muted" style={{ fontSize: 17 }}>So I build sites that don&apos;t just look good. They answer questions, text back missed calls and put jobs on the calendar while you&apos;re busy. That&apos;s the whole idea behind Tampa Website Services.</p>
+        <p className="muted" style={{ fontSize: 17 }}>I&apos;m a digital marketing professional with over 15 years of experience building strategies that help businesses grow, generate leads and increase revenue. My background covers digital advertising, lead generation, SEO, branding, marketing automation and performance analytics.</p>
+        <ul className="list-clean row gap-2" aria-label="Industries I've worked in">
+          {['Home improvement', 'Healthcare', 'Legal', 'Automotive', 'Home services'].map((x) => <li key={x} className="chip">{x}</li>)}
+        </ul>
+        <p className="muted" style={{ fontSize: 17 }}>Throughout my career I&apos;ve focused on combining creative marketing with data-driven decisions to deliver measurable results. I enjoy building marketing systems, improving processes, managing budgets and finding ways to make businesses more competitive and profitable.</p>
+        <h3 className="h4" style={{ marginTop: 16 }}>Why I love marketing</h3>
+        <p className="muted" style={{ fontSize: 17 }}>Marketing brings together creativity, strategy, technology and problem-solving. Every business has different challenges, and I enjoy figuring out what makes customers take action and turning that into campaigns that work. For me it&apos;s not about clicks or leads. It&apos;s about real growth you can measure.</p>
+        <p className="muted" style={{ fontSize: 17 }}>What keeps me passionate is that it never stops changing. There&apos;s always something new to learn, a different approach to test or a better way to improve performance. I love taking an idea, building a strategy around it and watching it turn into something successful. Being creative while using data to make smarter decisions is what makes this exciting to me.</p>
       </section>
 
       <section className="band" aria-labelledby="stats-h">
         <div className="container section stack gap-8">
           <h2 id="stats-h" className="sr-only">By the numbers</h2>
           <div className="grid" style={{ '--min': '200px', gap: 24 }}>
-            {[['15+', 'years building websites'], ['200+', 'websites launched'], ['175+', 'Tampa Bay businesses served'], ['Ybor City', 'home base']].map(([n, l]) => (
+            {[['15+', 'years in digital marketing'], ['200+', 'websites launched'], ['175+', 'Tampa Bay businesses served'], ['Ybor City', 'home base']].map(([n, l]) => (
               <div key={l} className="card-raised"><p className="stat accent">{n}</p><p className="small muted" style={{ marginTop: 8 }}>{l}</p></div>
             ))}
           </div>

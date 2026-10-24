@@ -87,7 +87,7 @@ export default function Home() {
 
       <section className="band" aria-label="By the numbers">
         <div className="container grid" style={{ '--min': '200px', gap: 24, paddingTop: 48, paddingBottom: 48 }}>
-          <div><p className="stat">15+</p><p className="muted" style={{ marginTop: 8 }}>years building Tampa websites</p></div>
+          <div><p className="stat">15+</p><p className="muted" style={{ marginTop: 8 }}>years in digital marketing</p></div>
           <div><p className="stat">200+</p><p className="muted" style={{ marginTop: 8 }}>websites launched</p></div>
           <div><p className="stat">175+</p><p className="muted" style={{ marginTop: 8 }}>clients served</p></div>
           <div><p className="stat accent">Ybor City</p><p className="muted" style={{ marginTop: 8 }}>home base, Tampa, FL</p></div>
