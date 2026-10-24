@@ -98,7 +98,7 @@ export default function AuditForm({ id = 'audit', full = false }) {
               <p style={{ fontWeight: 600 }}>{!full && res.findings.length > 3 ? `Email me the full report (${res.findings.length - 3} more fixes)` : 'Email me this report'}</p>
               <div className="grid" style={{ '--min': '200px', gap: 12 }}>
                 <label className="label">Email<input className="input" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@business.com" /></label>
-                <label className="label">Phone <span className="hint">Optional. Want Manny to walk you through it?</span><input className="input" type="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(813) 555-0123" /></label>
+                <label className="label"><span>Phone <span className="hint">(optional)</span></span><input className="input" type="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(813) 555-0123" aria-describedby={id + '-phone-hint'} /><span id={id + '-phone-hint'} className="hint small">Add it if you want Manny to walk you through it.</span></label>
               </div>
               <button className="btn btn-secondary" type="submit" disabled={sending} style={{ alignSelf: 'flex-start' }}>{sending ? 'Sending...' : 'Send my report'}</button>
             </form>
