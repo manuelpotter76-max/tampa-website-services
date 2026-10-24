@@ -70,8 +70,8 @@ export default function AuditForm({ id = 'audit', full = false }) {
           <div className="grid" style={{ '--min': '150px' }}>
             {Object.entries(res.scores).map(([k, v]) => (
               <div key={k} className="stack gap-2">
-                <div className="row between small"><span>{LABELS[k]}</span><span style={{ color: color(v) }}>{v} · {word(v)}</span></div>
-                <div className="meter"><span style={{ width: v + '%', background: color(v) }} /></div>
+                <div className="row between small"><span>{LABELS[k]}</span>{v === null ? <span className="muted">Not measured</span> : <span style={{ color: color(v) }}>{v} · {word(v)}</span>}</div>
+                <div className="meter"><span style={{ width: (v ?? 0) + '%', background: color(v ?? 0) }} /></div>
               </div>
             ))}
           </div>

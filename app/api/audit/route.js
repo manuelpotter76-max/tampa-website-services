@@ -41,7 +41,7 @@ async function pagespeed(url) {
   if (process.env.PAGESPEED_API_KEY) qs.set('key', process.env.PAGESPEED_API_KEY);
   try {
     const r = await timed('https://www.googleapis.com/pagespeedonline/v5/runPagespeed?' + qs, 50_000);
-    if (!r.ok) return null;
+    if (!r.ok) { console.error('PageSpeed failed', r.status, process.env.PAGESPEED_API_KEY ? 'with key' : 'no key'); return null; }
     const j = await r.json();
     const cat = j.lighthouseResult?.categories || {};
     const a = j.lighthouseResult?.audits || {};
@@ -55,6 +55,8 @@ async function pagespeed(url) {
   } catch { return null; }
 }
 
+const decode = (t) => t.replace(/&amp;/g, '&').replace(/&#0?39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n)).replace(/\s+/g, ' ');
+
 async function inspect(url) {
   const out = { https: url.startsWith('https://'), reachable: false };
   try {
@@ -64,7 +66,7 @@ async function inspect(url) {
     const html = (await r.text()).slice(0, 600_000);
     const low = html.toLowerCase();
     const title = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1]?.trim() || '';
-    out.title = title.slice(0, 120);
+    out.title = decode(title).slice(0, 120);
     out.hasMetaDescription = /<meta[^>]+name=["']description["'][^>]*content=["'][^"']{20,}/i.test(html);
     out.hasViewport = /<meta[^>]+name=["']viewport["']/i.test(html);
     out.h1Count = (html.match(/<h1[\s>]/gi) || []).length;
@@ -72,7 +74,7 @@ async function inspect(url) {
     out.hasForm = /<form[\s>]/i.test(html);
     out.hasSchema = /application\/ld\+json/i.test(html);
     out.hasLocalSchema = /"@type"\s*:\s*"(LocalBusiness|ProfessionalService|HomeAndConstructionBusiness|Plumber|HVACBusiness|Electrician|RoofingContractor|MedicalBusiness|[A-Za-z]*Business)"/i.test(html);
-    out.hasChat = /(intercom|drift\.com|tawk\.to|tidio|livechat|crisp\.chat|hubspot.*conversations|zopim|zendesk|olark|chatbot|chat-widget|leadconnector)/i.test(low);
+    out.hasChat = /(intercom|drift\.com|tawk\.to|tidio|livechat|crisp\.chat|hubspot.*conversations|zopim|zendesk|olark|chatbot|chat-widget|leadconnector|concierge|ai assistant|chat-fab|data-ai-chat)/i.test(low);
     out.hasBooking = /(calendly|zohobookings|acuityscheduling|squareup\.com\/appointments|book now|schedule (an |a )?(appointment|service|call)|housecallpro|servicetitan|jobber)/i.test(low);
     out.hasReviews = /(reviews?|testimonials?|stars?)/i.test(low);
   } catch { /* unreachable */ }
@@ -85,20 +87,21 @@ function score(ps, h) {
   const findings = [];
   const add = (area, level, text) => findings.push({ area, level, text });
 
-  const speed = ps?.performance ?? (h.reachable ? 50 : 0);
-  if (speed < 50) add('Speed', 'bad', `Slow on phones (${speed}/100). Most visitors leave before a slow page loads.`);
+  const speed = ps?.performance ?? null;
+  if (speed === null) { /* not measured: PageSpeed unavailable */ }
+  else if (speed < 50) add('Speed', 'bad', `Slow on phones (${speed}/100). Most visitors leave before a slow page loads.`);
   else if (speed < 90) add('Speed', 'warn', `Speed is middling (${speed}/100). Faster pages rank and convert better.`);
 
-  let mobile = (ps?.accessibility ?? 60) * 0.6 + (h.hasViewport ? 40 : 0);
+  let mobile = h.hasViewport ? (ps?.accessibility != null ? ps.accessibility * 0.6 + 40 : 90) : (ps?.accessibility ?? 50) * 0.4;
   if (!h.hasViewport) add('Mobile', 'bad', 'No mobile viewport tag. The site may look tiny or broken on phones.');
   if ((ps?.accessibility ?? 100) < 80) add('Mobile', 'warn', `Accessibility score is ${ps.accessibility}/100. Some visitors will struggle to use the site.`);
 
-  let seo = (ps?.seo ?? 60) * 0.7 + (h.hasMetaDescription ? 10 : 0) + (h.h1Count === 1 ? 10 : 0) + (h.hasLocalSchema ? 10 : 0);
+  let seo = (ps?.seo ?? 70) * 0.7 + (h.hasMetaDescription ? 10 : 0) + (h.h1Count === 1 ? 10 : 0) + (h.hasLocalSchema ? 10 : 0);
   if (!h.hasMetaDescription) add('SEO', 'warn', 'No meta description. Google writes its own, usually worse.');
   if (h.h1Count !== 1) add('SEO', 'warn', h.h1Count === 0 ? 'No main H1 heading on the page.' : `${h.h1Count} H1 headings. One clear H1 helps Google understand the page.`);
   if (!h.hasLocalSchema) add('SEO', 'warn', 'No local business schema. It helps you show up in local search and maps.');
 
-  let trust = (h.finalHttps || h.https ? 40 : 0) + (ps?.bestPractices ?? 60) * 0.4 + (h.hasReviews ? 20 : 0);
+  let trust = (h.finalHttps || h.https ? 40 : 0) + (ps?.bestPractices ?? 100) * 0.4 + (h.hasReviews ? 20 : 0);
   if (!(h.finalHttps || h.https)) add('Trust', 'bad', 'Not secure (no HTTPS). Browsers warn visitors away.');
   if (!h.hasReviews) add('Trust', 'warn', 'No reviews or testimonials found. Proof is what turns visitors into calls.');
 
@@ -108,8 +111,11 @@ function score(ps, h) {
   if (!h.hasBooking) add('Missed leads', 'warn', 'No online booking. Every booking waits on a callback.');
   if (!h.hasForm) add('Missed leads', 'warn', 'No contact form found.');
 
-  const scores = { speed: clamp(speed), mobile: clamp(mobile), seo: clamp(seo), trust: clamp(trust), leads: clamp(leads) };
-  const overall = clamp(scores.speed * 0.25 + scores.mobile * 0.15 + scores.seo * 0.2 + scores.trust * 0.15 + scores.leads * 0.25);
+  const scores = { speed: speed === null ? null : clamp(speed), mobile: clamp(mobile), seo: clamp(seo), trust: clamp(trust), leads: clamp(leads) };
+  const W = { speed: 0.25, mobile: 0.15, seo: 0.2, trust: 0.15, leads: 0.25 };
+  let sum = 0, wt = 0;
+  for (const k in W) if (scores[k] !== null) { sum += scores[k] * W[k]; wt += W[k]; }
+  const overall = clamp(sum / wt);
   const order = { bad: 0, warn: 1 };
   findings.sort((a, b) => order[a.level] - order[b.level]);
   return { overall, scores, findings };
