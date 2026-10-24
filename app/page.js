@@ -8,6 +8,7 @@ import { Icon } from '@/components/Logo';
 import { SITE, telHref } from '@/lib/site';
 import { WORK } from '@/lib/work';
 import { INDUSTRIES } from '@/lib/industries';
+import { POSTS, fmtDate } from '@/lib/posts';
 
 export const metadata = {
   title: { absolute: 'Tampa Website Services | Websites + AI Systems in Tampa Bay' },
@@ -142,6 +143,25 @@ export default function Home() {
             <a href={SITE.linkedin} className="btn btn-secondary">Connect on LinkedIn</a>
           </div>
         </div>
+      </section>
+
+      <section className="container section stack gap-8" aria-labelledby="blog-h">
+        <div className="row between gap-3" style={{ alignItems: 'flex-end' }}>
+          <div className="stack gap-3"><p className="eyebrow">From the blog</p><h2 id="blog-h" className="h2">Tips that get you more calls</h2></div>
+          <Link href="/blogs" className="textlink">All posts →</Link>
+        </div>
+        <ul className="list-clean grid" style={{ '--min': '280px', gap: 24 }}>
+          {[...POSTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3).map((p) => (
+            <li key={p.slug}>
+              <Link href={'/blogs/post/' + p.slug} className="card stack gap-3" style={{ color: 'var(--ink)', height: '100%' }}>
+                <time className="tiny muted" dateTime={p.date}>{fmtDate(p.date)}</time>
+                <h3 className="h4" style={{ fontSize: 20 }}>{p.title}</h3>
+                <p className="small muted">{p.description}</p>
+                <span className="small accent" style={{ marginTop: 'auto', fontWeight: 500 }}>Read →</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <CtaBand title="See where your site is leaking leads." text="Free score in about 60 seconds. No call required." />

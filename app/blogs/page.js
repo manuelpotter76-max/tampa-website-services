@@ -3,7 +3,7 @@ import { Intro, CtaBand } from '@/components/Blocks';
 import { POSTS, fmtDate } from '@/lib/posts';
 
 export const metadata = {
-  title: 'Insights: Web Design, AI and Local SEO Tips for Tampa Businesses',
+  title: 'Blog: Web Design, AI and Local SEO Tips for Tampa Businesses',
   description: 'Practical notes on websites, AI follow-up and local SEO for Tampa Bay businesses.',
   alternates: { canonical: '/blogs' },
 };
@@ -12,7 +12,7 @@ export default function Blogs() {
   const posts = [...POSTS].sort((a, b) => b.date.localeCompare(a.date));
   return (
     <>
-      <Intro eyebrow="Insights" title="Notes on sites that sell." text="Practical tips on websites, AI follow-up and local SEO for Tampa Bay businesses." />
+      <Intro eyebrow="Blog" title="Notes on sites that sell." text="Practical tips on websites, AI follow-up and local SEO for Tampa Bay businesses." />
       <section className="container section" aria-label="Posts">
         <ul className="list-clean grid" style={{ '--min': '300px', gap: 24 }}>
           {posts.map((p) => (

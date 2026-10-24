@@ -34,7 +34,7 @@ export default async function Post({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <article className="container section">
         <div className="prose">
-          <Link href="/blogs" className="textlink">← All insights</Link>
+          <Link href="/blogs" className="textlink">← All posts</Link>
           <h1 className="h1" style={{ margin: '24px 0 10px', color: 'var(--ink)' }}>{p.title}</h1>
           <p className="small">By {SITE.founder} · <time dateTime={p.date}>{fmtDate(p.date)}</time></p>
           {p.body.map((b, i) => <Block key={i} b={b} />)}
