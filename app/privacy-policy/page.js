@@ -26,7 +26,7 @@ export default function Privacy() {
       <h2>Who helps us run the site</h2>
       <p>We use service providers to host the site, store form submissions, run the AI concierge, scan websites and send email. They only use your data to provide those services to us. They are Vercel (hosting), Supabase (database), Anthropic (AI assistant), Google PageSpeed Insights (website audits), Resend (email) and Zoho Bookings (scheduling).</p>
       <h2>How long we keep it</h2>
-      <p>[Retention period, for example: we keep inquiries and chat logs for up to 24 months, then delete them.]</p>
+      <p>We keep inquiries, audit results and chat conversations for 2 years after your last interaction with us, then delete them automatically. You can ask us to delete your information sooner at any time.</p>
       <h2>Your choices</h2>
       <p>You can ask us to see, correct or delete your information by emailing {email} or calling {SITE.phone}.</p>
       <h2>Contact</h2>
