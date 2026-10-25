@@ -5,7 +5,7 @@ export const metadata = { title: 'How We Handle Your Data with AI', description:
 
 export default function AiPolicy() {
   return (
-    <Legal title="How we handle your data with AI" updated="[date]">
+    <Legal title="How we handle your data with AI" updated="October 25, 2026">
       <p>We use AI on this site and in the systems we build for clients. Here is how it works, in plain English.</p>
       <h2>Where we use AI</h2>
       <ul>
@@ -17,7 +17,7 @@ export default function AiPolicy() {
       <h2>Who runs the AI</h2>
       <p>The concierge uses Anthropic&apos;s Claude through their business API. [Confirm provider data terms, for example that API data is not used to train models.]</p>
       <h2>What we keep</h2>
-      <p>We save chat transcripts and audit results so we can follow up and improve our answers. [Retention period.] Ask us to delete yours anytime at {SITE.email || '[contact email]'} or {SITE.phone}.</p>
+      <p>We save chat transcripts and audit results so we can follow up and improve our answers. [Retention period.] Ask us to delete yours anytime at {SITE.email} or {SITE.phone}.</p>
       <h2>People stay in charge</h2>
       <p>AI never signs contracts, sets final prices or makes decisions about you. A person reviews every project quote.</p>
     </Legal>

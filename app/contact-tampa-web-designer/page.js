@@ -20,7 +20,7 @@ export default function Contact() {
             <li><a href={SITE.phoneHref} className="card-raised card-tight row gap-3 center" style={{ color: 'var(--ink)' }}><Icon name="phone" /> <span><strong style={{ display: 'block' }}>{SITE.phone}</strong><span className="small muted">Call or text</span></span></a></li>
             <li><a href={SITE.bookingUrl} className="card-raised card-tight row gap-3 center" style={{ color: 'var(--ink)' }}><Icon name="calendar" /> <span><strong style={{ display: 'block' }}>Book a call</strong><span className="small muted">Pick a time that works</span></span></a></li>
             {SITE.email && <li><a href={'mailto:' + SITE.email} className="card-raised card-tight row gap-3 center" style={{ color: 'var(--ink)' }}><Icon name="mail" /> <span><strong style={{ display: 'block' }}>{SITE.email}</strong><span className="small muted">Email</span></span></a></li>}
-            <li className="card-raised card-tight row gap-3 center"><Icon name="pin" /> <span><strong style={{ display: 'block' }}>{SITE.street ? SITE.street + ', ' : ''}{SITE.neighborhood}, {SITE.city}, {SITE.region}</strong>{SITE.hours && <span className="small muted">{SITE.hours}</span>}</span></li>
+            <li className="card-raised card-tight row gap-3 center"><Icon name="pin" /> <span><strong style={{ display: 'block' }}>{SITE.location}</strong></span></li>
           </ul>
         </div>
         <div className="grow card-raised" style={{ padding: 28 }}>

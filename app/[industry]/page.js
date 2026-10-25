@@ -59,9 +59,7 @@ export default async function IndustryPage({ params }) {
             <p className="lead" style={{ maxWidth: 620 }}>{p.lead}</p>
             <div className="row gap-3">
               <Link href="/website-audit-review-request" className="btn btn-primary">{p.cta1}</Link>
-              {p.cta2.kind === 'demo' && SITE.demoPhone
-                ? <a href={telHref(SITE.demoPhone)} className="btn btn-secondary">{p.cta2.label}</a>
-                : <a href={SITE.bookingUrl} className="btn btn-secondary">{p.cta2.kind === 'demo' ? 'Book a call' : p.cta2.label}</a>}
+              <a href={SITE.bookingUrl} className="btn btn-secondary">{p.cta2.label}</a>
             </div>
           </div>
           <Figure p={p} />

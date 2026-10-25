@@ -27,7 +27,7 @@ function jsonLd() {
     telephone: '+1-813-816-2669',
     image: SITE.url + '/images/manny-potter.jpg',
     founder: { '@type': 'Person', name: SITE.founder, sameAs: [SITE.linkedin] },
-    address: { '@type': 'PostalAddress', ...(SITE.street ? { streetAddress: SITE.street } : {}), addressLocality: 'Tampa', addressRegion: 'FL', addressCountry: 'US' },
+    address: { '@type': 'PostalAddress', addressLocality: 'Tampa', addressRegion: 'FL', addressCountry: 'US' },
     areaServed: ['Tampa', 'Brandon', 'Riverview', 'Valrico', 'Wesley Chapel', 'Lutz', 'Clearwater', 'St. Petersburg', 'Florida'],
     priceRange: '$$',
   };
@@ -44,7 +44,7 @@ export default function Home() {
           <div className="grow stack gap-6">
             <p className="eyebrow">Websites + AI systems · Ybor City, Tampa</p>
             <h1 className="display" style={{ maxWidth: 760 }}>Websites that answer, follow up and book the job.</h1>
-            <p className="lead" style={{ maxWidth: 600 }}>We build Tampa business websites with AI built in. Don&apos;t take our word for it. Audit your site, call our demo line, or ask the AI assistant, right here on this page.</p>
+            <p className="lead" style={{ maxWidth: 600 }}>We build Tampa business websites with AI built in. Don&apos;t take our word for it. Audit your site or ask the AI assistant, right here on this page.</p>
             <div style={{ maxWidth: 620 }}><AuditForm id="hero-audit" /></div>
           </div>
           <div className="side stack gap-4 center">
@@ -57,18 +57,9 @@ export default function Home() {
       <section className="container section stack gap-8" aria-labelledby="demos-h">
         <div className="stack gap-3 narrow">
           <p className="eyebrow">Try it, don&apos;t read about it</p>
-          <h2 id="demos-h" className="h2">Everything we sell, working on this page.</h2>
+          <h2 id="demos-h" className="h2">Try it yourself, right on this page.</h2>
         </div>
         <div className="grid" style={{ '--min': '320px', gap: 24 }}>
-          <article className="card stack gap-4">
-            <h3 className="h4">Call and hang up</h3>
-            <p className="muted">Call our demo line. Nobody picks up. You get a text back in seconds, the same thing your customers would get when you&apos;re on a roof.</p>
-            {SITE.demoPhone ? (
-              <a href={telHref(SITE.demoPhone)} className="btn btn-secondary mono" style={{ marginTop: 'auto', justifyContent: 'flex-start', fontSize: 18 }}><Icon name="phone" color="#A78BFA" />{SITE.demoPhone}</a>
-            ) : (
-              <div className="card-tight muted small" style={{ marginTop: 'auto', background: 'var(--bg)', border: '1px solid var(--hairline)' }}>Demo line launching soon. Until then, <a href={SITE.bookingUrl}>book a call</a> and we&apos;ll show you live.</div>
-            )}
-          </article>
           <article className="card stack gap-4">
             <h3 className="h4">Ask the AI assistant</h3>
             <ChatBox compact />

@@ -19,7 +19,7 @@ npm run dev
 | ANTHROPIC_MODEL | no | Defaults to claude-haiku-5-5 |
 | PAGESPEED_API_KEY | recommended | Google PageSpeed quota for the audit |
 | RESEND_API_KEY, LEAD_NOTIFY_EMAIL, LEAD_FROM_EMAIL | optional | Email Manny on each new lead |
-| NEXT_PUBLIC_DEMO_PHONE, NEXT_PUBLIC_CONTACT_EMAIL | optional | Shown when set |
+| NEXT_PUBLIC_CONTACT_EMAIL | optional | Overrides hello@tampawebsiteservices.com |
 
 ## Where things live
 - `lib/site.js` business info, nav, prices

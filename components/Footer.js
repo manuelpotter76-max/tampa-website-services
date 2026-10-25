@@ -18,7 +18,7 @@ export default function Footer() {
             {FOOTER_LINKS.map((l) => <Link key={l.href} href={l.href}>{l.label}</Link>)}
           </nav>
           <address className="stack gap-2 small muted" style={{ fontStyle: 'normal' }}>
-            <span>{SITE.street ? SITE.street + ', ' : ''}{SITE.neighborhood}, {SITE.city}, {SITE.region}</span>
+            <span>{SITE.location}</span>
             <a href={SITE.phoneHref} style={{ color: 'var(--ink)' }}>{SITE.phone}</a>
             {SITE.email ? <a href={'mailto:' + SITE.email} style={{ color: 'var(--ink)' }}>{SITE.email}</a> : null}
             {SITE.hours ? <span>{SITE.hours}</span> : null}
