@@ -15,7 +15,7 @@ export default function AiPolicy() {
       <h2>What the AI sees</h2>
       <p>Only what you type into the chat, plus the page you are on. Please do not share passwords, card numbers or health details in the chat.</p>
       <h2>Who runs the AI</h2>
-      <p>The concierge uses Anthropic&apos;s Claude through their business API. [Confirm provider data terms, for example that API data is not used to train models.]</p>
+      <p>The assistant runs on Anthropic&apos;s Claude through their business API. Under Anthropic&apos;s terms for business customers, what you type is not used to train their AI models.</p>
       <h2>What we keep</h2>
       <p>We save chat transcripts and audit results so we can follow up and improve our answers. We keep them for 2 years after your last interaction with us, then delete them automatically. Ask us to delete yours anytime at {SITE.email} or {SITE.phone}.</p>
       <h2>People stay in charge</h2>

@@ -16,7 +16,7 @@ export default function Terms() {
       <h2>Your content</h2>
       <p>Do not submit anything unlawful or anyone else&apos;s private information. Do not try to misuse the audit or chat tools.</p>
       <h2>Liability</h2>
-      <p>To the extent the law allows, {SITE.legalName} is not liable for indirect or consequential losses from using this site. [Lawyer to review.]</p>
+      <p>To the extent the law allows, {SITE.legalName} is not liable for indirect or consequential losses from using this site.</p>
       <h2>Governing law</h2>
       <p>These terms are governed by the laws of the State of Florida.</p>
       <h2>Contact</h2>
