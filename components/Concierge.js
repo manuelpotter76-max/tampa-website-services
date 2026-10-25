@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Icon } from './Logo';
+import { SITE } from '@/lib/site';
 
 const GREETING = "Hi, I'm the Tampa Website Services AI assistant. Ask me anything about a website for your business.";
 
@@ -16,6 +17,26 @@ function useSession() {
     setId(v);
   }, []);
   return id;
+}
+
+// Turn the booking link, other links and phone numbers in AI replies into tap-able links.
+const LINK_RE = /(https?:\/\/[^\s)]+[^\s).,!?])|(\(?\b\d{3}\)?[-. ]\d{3}[-. ]\d{4}\b)/g;
+function Linked({ text }) {
+  const out = [];
+  let last = 0, m, k = 0;
+  LINK_RE.lastIndex = 0;
+  while ((m = LINK_RE.exec(text))) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    if (m[1]) {
+      const isBooking = m[1].startsWith(SITE.bookingUrl.split('#')[0]);
+      out.push(<a key={k++} href={m[1]} className="textlink" target="_blank" rel="noopener noreferrer">{isBooking ? 'book a call here' : m[1].replace(/^https?:\/\//, '')}</a>);
+    } else {
+      out.push(<a key={k++} href={'tel:+1' + m[2].replace(/\D/g, '')} className="textlink">{m[2]}</a>);
+    }
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
 }
 
 export function ChatBox({ compact = false, autoFocus = false }) {
@@ -48,7 +69,7 @@ export function ChatBox({ compact = false, autoFocus = false }) {
     <div className="stack gap-3" style={{ height: '100%', minHeight: 0 }}>
       <div ref={logRef} className="chat-log" aria-live="polite" style={{ flex: '1 1 auto', minHeight: compact ? 150 : 0, maxHeight: compact ? 260 : 'none', paddingRight: 4 }}>
         {msgs.map((m, i) => (
-          <div key={i} className={'bubble ' + (m.role === 'user' ? 'me' : 'ai')} style={{ whiteSpace: 'pre-wrap' }}>{m.content}</div>
+          <div key={i} className={'bubble ' + (m.role === 'user' ? 'me' : 'ai')} style={{ whiteSpace: 'pre-wrap' }}>{m.role === 'user' ? m.content : <Linked text={m.content} />}</div>
         ))}
         {busy && <div className="bubble ai" aria-label="Assistant is typing"><span className="typing"><span /><span /><span /></span></div>}
       </div>

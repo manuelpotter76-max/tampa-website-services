@@ -36,7 +36,7 @@ export async function POST(req) {
   while (messages.length && messages[0].role !== 'user') messages.shift();
   if (!messages.length) return Response.json({ reply: 'Ask me anything about a website for your business.' });
 
-  const sessionId = String(body.sessionId || '').slice(0, 64) || 'anon';
+  const sessionId = String(body.sessionId || '').slice(0, 64) || crypto.randomUUID();
   const key = process.env.ANTHROPIC_API_KEY;
   let reply = FALLBACK;
 
@@ -59,6 +59,6 @@ export async function POST(req) {
     }
   }
 
-  await insertRow('chats', { session_id: sessionId, page: String(body.page || '').slice(0, 300), messages: [...messages, { role: 'assistant', content: reply }] });
+  await insertRow('chats', { session_id: sessionId, page: String(body.page || '').slice(0, 300), messages: [...messages, { role: 'assistant', content: reply }], updated_at: new Date().toISOString() }, { upsertOn: 'session_id' });
   return Response.json({ reply });
 }
