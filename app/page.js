@@ -42,7 +42,7 @@ export default function Home() {
       <section className="gridbg bordered-b">
         <div className="container section row gap-12 center">
           <div className="grow stack gap-6">
-            <p className="eyebrow">Websites + AI systems · Ybor City, Tampa</p>
+            <p className="eyebrow">Websites + AI systems · Tampa, Florida</p>
             <h1 className="display" style={{ maxWidth: 760 }}>Websites that answer, follow up and book the job.</h1>
             <p className="lead" style={{ maxWidth: 600 }}>We build Tampa business websites with AI built in. Don&apos;t take our word for it. Audit your site or ask the AI assistant, right here on this page.</p>
             <div style={{ maxWidth: 620 }}><AuditForm id="hero-audit" /></div>
@@ -82,7 +82,7 @@ export default function Home() {
           <div><p className="stat">15+</p><p className="muted" style={{ marginTop: 8 }}>years in digital marketing</p></div>
           <div><p className="stat">200+</p><p className="muted" style={{ marginTop: 8 }}>websites launched</p></div>
           <div><p className="stat">175+</p><p className="muted" style={{ marginTop: 8 }}>clients served</p></div>
-          <div><p className="stat accent">Ybor City</p><p className="muted" style={{ marginTop: 8 }}>home base, Tampa, FL</p></div>
+          <div><p className="stat accent">Tampa</p><p className="muted" style={{ marginTop: 8 }}>home base, Tampa Bay, Florida</p></div>
         </div>
       </section>
 

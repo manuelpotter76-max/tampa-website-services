@@ -3,8 +3,8 @@ import { CtaBand } from '@/components/Blocks';
 import { SITE } from '@/lib/site';
 
 export const metadata = {
-  title: 'About Tampa Website Services, Ybor City',
-  description: 'Tampa Website Services is a Ybor City web design and AI company led by Manny Potter, with 15+ years in digital marketing, lead generation and SEO.',
+  title: 'About Tampa Website Services, Tampa, Florida',
+  description: 'Tampa Website Services is a Tampa web design and AI company led by Manny Potter, with 15+ years in digital marketing, lead generation and SEO.',
   alternates: { canonical: '/about-tampa-website-services' },
 };
 
@@ -12,7 +12,7 @@ const VALUES = [
   ['Straight answers', 'Clear prices, plain language and a written quote before anything starts.'],
   ['Built to work', 'Every site has one job: turn visitors into calls, bookings and customers.'],
   ['Accessible by default', 'WCAG 2.2 AA on every build, because every visitor counts.'],
-  ['Local', 'Based in Ybor City. We know Tampa Bay businesses because we are one.'],
+  ['Local', 'Based in Tampa. We know Tampa Bay businesses because we are one.'],
 ];
 
 export default function About() {
@@ -23,7 +23,7 @@ export default function About() {
           <div className="grow stack gap-5">
             <p className="eyebrow">About</p>
             <h1 className="display">A Tampa web shop that builds sites that sell.</h1>
-            <p className="lead">Tampa Website Services is a website and AI company in Ybor City. We build sites for local businesses, then add the AI that answers, follows up and books the work.</p>
+            <p className="lead">Tampa Website Services is a website and AI company in Tampa, Florida. We build sites for local businesses, then add the AI that answers, follows up and books the work.</p>
             <div className="row gap-3">
               <a href={SITE.bookingUrl} className="btn btn-primary">Book a call with Manny</a>
               <a href={SITE.linkedin} className="btn btn-secondary">LinkedIn</a>
@@ -52,7 +52,7 @@ export default function About() {
         <div className="container section stack gap-8">
           <h2 id="stats-h" className="sr-only">By the numbers</h2>
           <div className="grid" style={{ '--min': '200px', gap: 24 }}>
-            {[['15+', 'years in digital marketing'], ['200+', 'websites launched'], ['175+', 'Tampa Bay businesses served'], ['Ybor City', 'home base']].map(([n, l]) => (
+            {[['15+', 'years in digital marketing'], ['200+', 'websites launched'], ['175+', 'Tampa Bay businesses served'], ['Tampa', 'home base']].map(([n, l]) => (
               <div key={l} className="card-raised"><p className="stat accent">{n}</p><p className="small muted" style={{ marginTop: 8 }}>{l}</p></div>
             ))}
           </div>

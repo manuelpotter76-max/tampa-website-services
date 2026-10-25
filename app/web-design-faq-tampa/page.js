@@ -23,7 +23,7 @@ const GROUPS = [
     ['Will my site show up on Google?', 'Every site ships with on-site SEO: clean titles, descriptions, headings, local business data and fast load times. Ongoing local SEO is available as a monthly plan.'],
     ['Is the site accessible?', 'Yes. We build to WCAG 2.2 AA, with real contrast, keyboard support, screen reader labels and large touch targets.'],
     ['Do I own my site?', 'Yes. Your content, your domain and your data are yours.'],
-    ['Do you work outside Tampa?', 'Yes. We are based in Ybor City and work with businesses across Tampa Bay and Florida.'],
+    ['Do you work outside Tampa?', 'Yes. We are based in Tampa and work with businesses across Tampa Bay and Florida.'],
   ]],
 ];
 

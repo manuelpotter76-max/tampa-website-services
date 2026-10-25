@@ -4,7 +4,7 @@ import { SITE } from '@/lib/site';
 
 export const metadata = {
   title: 'Contact a Tampa Web Designer',
-  description: 'Talk to Tampa Website Services in Ybor City. Call 813-816-2669, book a call, or send a message and Manny gets back to you within one business day.',
+  description: 'Talk to Tampa Website Services in Tampa, Florida. Call 813-816-2669, book a call, or send a message and Manny gets back to you within one business day.',
   alternates: { canonical: '/contact-tampa-web-designer' },
 };
 
