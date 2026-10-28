@@ -40,9 +40,11 @@ export function Configurator({ compact = false }) {
   const [site, setSite] = useState('starter');
   const [ai, setAi] = useState({});
   const [plans, setPlans] = useState({});
-  const anyAi = Object.values(ai).some(Boolean);
+  const aiCount = Object.values(ai).filter(Boolean).length;
+  const anyAi = aiCount > 0;
+  const aiPrice = PRICES.ai + Math.max(0, aiCount - 1) * PRICES.aiExtra;
   const monthly = PRICES.plans.filter((p) => plans[p.id]).reduce((s, p) => s + p.price, 0);
-  const pkg = anyAi ? ['AI Growth System', PRICES.ai] : site === 'growth' ? ['Growth Website', PRICES.growth] : ['Starter Website', PRICES.starter];
+  const pkg = anyAi ? ['AI Growth System', aiPrice] : site === 'growth' ? ['Growth Website', PRICES.growth] : ['Starter Website', PRICES.starter];
   return (
     <div className="stack gap-5">
       <fieldset style={{ border: 0, margin: 0, padding: 0 }} className="stack gap-2">
@@ -54,6 +56,7 @@ export function Configurator({ compact = false }) {
       </fieldset>
       <fieldset style={{ border: 0, margin: 0, padding: 0 }} className="stack gap-2">
         <legend className="small muted" style={{ marginBottom: 8, fontWeight: 500 }}>2. Add AI that works for you</legend>
+        <span className="tiny muted">First AI tool makes it the AI Growth System at {money(PRICES.ai)}. Each extra tool adds {money(PRICES.aiExtra)}.</span>
         <div className="row gap-2">
           {ADDONS.map((a) => <button key={a.id} type="button" className="toggle" aria-pressed={!!ai[a.id]} onClick={() => setAi({ ...ai, [a.id]: !ai[a.id] })}>{a.label}</button>)}
         </div>
@@ -70,7 +73,7 @@ export function Configurator({ compact = false }) {
         <div className="stack gap-2">
           <span className="tiny muted">Your package</span>
           <span className="h4">{pkg[0]}</span>
-          <span className="tiny muted">{monthly ? `plus ${money(monthly)}/mo in plans` : anyAi ? 'Includes the custom website' : 'No monthly plan selected'}</span>
+          <span className="tiny muted">{monthly ? `plus ${money(monthly)}/mo in plans` : anyAi ? `Includes the custom website and ${aiCount} AI tool${aiCount > 1 ? 's' : ''}` : 'No monthly plan selected'}</span>
         </div>
         <div className="stack" style={{ alignItems: 'flex-end' }}>
           <span className="tiny muted">Starting at</span>
