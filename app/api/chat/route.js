@@ -29,10 +29,13 @@ export async function POST(req) {
   let body;
   try { body = await req.json(); } catch { return Response.json({ reply: 'Something went wrong. Try again?' }, { status: 400 }); }
 
-  const messages = (Array.isArray(body.messages) ? body.messages : [])
+  // Full conversation (kept for the transcript email), and the last 12 turns sent to the model.
+  const history = (Array.isArray(body.messages) ? body.messages : [])
     .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
-    .slice(-12)
+    .slice(-100)
     .map((m) => ({ role: m.role, content: m.content.slice(0, 2000) }));
+  while (history.length && history[0].role !== 'user') history.shift();
+  const messages = history.slice(-12);
   while (messages.length && messages[0].role !== 'user') messages.shift();
   if (!messages.length) return Response.json({ reply: 'Ask me anything about a website for your business.' });
 
@@ -59,6 +62,6 @@ export async function POST(req) {
     }
   }
 
-  await insertRow('chats', { session_id: sessionId, page: String(body.page || '').slice(0, 300), messages: [...messages, { role: 'assistant', content: reply }], updated_at: new Date().toISOString() }, { upsertOn: 'session_id' });
+  await insertRow('chats', { session_id: sessionId, page: String(body.page || '').slice(0, 300), messages: [...history, { role: 'assistant', content: reply }], updated_at: new Date().toISOString() }, { upsertOn: 'session_id' });
   return Response.json({ reply });
 }
