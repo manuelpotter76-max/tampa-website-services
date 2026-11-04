@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Icon } from './Logo';
 import { SITE } from '@/lib/site';
+import { track } from '@/lib/track';
 
 const GREETING = "Hi, I'm the Tampa Website Services AI assistant. Ask me anything about a website for your business.";
 
@@ -55,6 +56,7 @@ export function ChatBox({ compact = false, autoFocus = false }) {
     if (!q || busy) return;
     const next = [...msgs, { role: 'user', content: q }];
     setMsgs(next); setText(''); setBusy(true);
+    track('chat_message', { message_number: next.filter((m) => m.role === 'user').length, page_path: path });
     try {
       const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: next.slice(1), sessionId: session, page: path }) });
       const j = await r.json();
@@ -86,7 +88,7 @@ export function ChatBox({ compact = false, autoFocus = false }) {
 export default function ConciergeLauncher() {
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    const h = () => setOpen(true);
+    const h = () => { setOpen(true); track('chat_open', { via: 'button' }); };
     window.addEventListener('tws:open-chat', h);
     const esc = (e) => { if (e.key === 'Escape') setOpen(false); };
     window.addEventListener('keydown', esc);
@@ -108,7 +110,7 @@ export default function ConciergeLauncher() {
           </div>
         </div>
       )}
-      <button type="button" className="chat-fab" aria-label={open ? 'Close chat' : 'Chat with our AI assistant'} aria-expanded={open} onClick={() => setOpen(!open)}>
+      <button type="button" className="chat-fab" aria-label={open ? 'Close chat' : 'Chat with our AI assistant'} aria-expanded={open} onClick={() => { if (!open) track('chat_open', { via: 'bubble' }); setOpen(!open); }}>
         <Icon name={open ? 'close' : 'chat'} size={26} />
       </button>
     </>

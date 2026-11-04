@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { SITE } from '@/lib/site';
+import { track } from '@/lib/track';
 
 const LABELS = { speed: 'Speed', mobile: 'Mobile', seo: 'SEO', trust: 'Trust', leads: 'Missed leads' };
 const color = (n) => (n >= 90 ? 'var(--success)' : n >= 50 ? 'var(--warning)' : 'var(--danger)');
@@ -38,6 +39,7 @@ export default function AuditForm({ id = 'audit', full = false }) {
       const j = await r.json();
       if (!j.ok) { setErr(j.error || 'Something went wrong.'); setState('idle'); return; }
       setRes(j); setState('done');
+      track('audit_run', { score: j.overall, page_path: path });
     } catch { setErr('Something went wrong. Try again?'); setState('idle'); }
   }
 
@@ -47,7 +49,7 @@ export default function AuditForm({ id = 'audit', full = false }) {
     try {
       const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: 'audit', auditId: res?.auditId, email, phone, website: res?.url, page: path }) });
       const j = await r.json().catch(() => ({}));
-      if (j.ok) { setSent(true); setMailed(!!j.reportSent); } else setErr(j.error || 'Could not send. Try again?');
+      if (j.ok) { setSent(true); setMailed(!!j.reportSent); track('generate_lead', { lead_source: 'audit', with_phone: !!phone, page_path: path }); } else setErr(j.error || 'Could not send. Try again?');
     } catch { setErr('Could not send. Try again?'); }
     setSending(false);
   }

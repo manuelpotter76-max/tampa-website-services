@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PinnedBar from '@/components/PinnedBar';
 import ConciergeLauncher from '@/components/Concierge';
+import Analytics from '@/components/Analytics';
 import { SITE } from '@/lib/site';
 
 const sans = Geist({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         <Footer />
         <PinnedBar />
         <ConciergeLauncher />
+        <Analytics />
       </body>
     </html>
   );

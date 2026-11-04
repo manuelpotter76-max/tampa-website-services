@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { SITE } from '@/lib/site';
+import { track } from '@/lib/track';
 
 import { SMS_CONSENT_TEXT } from '@/lib/consent';
 
@@ -22,6 +23,7 @@ export default function ContactForm() {
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j.error || 'Something went wrong.');
       setState('sent');
+      track('generate_lead', { lead_source: 'contact', page_path: page });
     } catch (x) {
       setErr(x.message + ' You can also call ' + SITE.phone + '.');
       setState('idle');

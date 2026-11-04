@@ -13,7 +13,7 @@ export default function Privacy() {
         <li><strong>Things you give us:</strong> your name, email, phone, website address and message when you use our contact form, audit or chat.</li>
         <li><strong>Audit data:</strong> the website address you enter and the results of the scan.</li>
         <li><strong>Chat conversations:</strong> messages you send to our AI concierge.</li>
-        <li><strong>Basic usage data:</strong> pages visited and device type, through our hosting provider.</li>
+        <li><strong>Basic usage data:</strong> pages visited, device type, general location and how you found us, through Google Analytics and our hosting provider. Google Analytics uses cookies. You can opt out with Google&apos;s <a className="textlink" href="https://tools.google.com/dlpage/gaoptout">browser add-on</a>.</li>
       </ul>
       <h2>How we use it</h2>
       <ul>
@@ -24,7 +24,7 @@ export default function Privacy() {
       <h2>Text messages</h2>
       <p>If you check the SMS consent box, we may text you about your inquiry. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. We do not share your mobile number or SMS consent with third parties for their marketing.</p>
       <h2>Who helps us run the site</h2>
-      <p>We use service providers to host the site, store form submissions, run the AI concierge, scan websites and send email. They only use your data to provide those services to us. They are Vercel (hosting), Supabase (database), Anthropic (AI assistant), Google PageSpeed Insights (website audits), Resend (email) and Zoho Bookings (scheduling).</p>
+      <p>We use service providers to host the site, store form submissions, run the AI concierge, scan websites and send email. They only use your data to provide those services to us. They are Vercel (hosting), Supabase (database), Anthropic (AI assistant), Google Analytics (site traffic), Google PageSpeed Insights (website audits), Resend (email) and Zoho Bookings (scheduling).</p>
       <h2>How long we keep it</h2>
       <p>We keep inquiries, audit results and chat conversations for 2 years after your last interaction with us, then delete them automatically. You can ask us to delete your information sooner at any time.</p>
       <h2>Your choices</h2>
