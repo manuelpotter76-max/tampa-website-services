@@ -231,3 +231,13 @@ details.faq p { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(
   .skyline .node { opacity: 1; }
   .skyline .seg { opacity: 0.5; }
 }
+
+/* Blog post extras */
+.prose a.textlink { display: inline; min-height: 0; font-size: inherit; font-weight: inherit; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.post-quote { margin: 0 0 16px; padding: 14px 18px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 var(--radius-md) var(--radius-md) 0; color: var(--ink); font-style: italic; }
+.post-table { overflow-x: auto; margin: 0 0 16px; border: 1px solid var(--hairline); border-radius: var(--radius-md); }
+.post-table table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.post-table th, .post-table td { padding: 12px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--hairline); }
+.post-table th { color: var(--ink); background: var(--surface); font-weight: 600; }
+.post-table tr:last-child td { border-bottom: 0; }
+.post-table td:last-child { white-space: nowrap; color: var(--ink); font-weight: 500; }

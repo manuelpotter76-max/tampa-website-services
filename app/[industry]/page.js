@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { postBySlug } from '@/lib/posts';
 import { notFound } from 'next/navigation';
 import { INDUSTRIES, industryBySlug } from '@/lib/industries';
 import { SITE, telHref } from '@/lib/site';
@@ -39,11 +40,23 @@ function Figure({ p }) {
   );
 }
 
+// Blog post to suggest on each industry page.
+const RELATED = {
+  'hvac-website-design-tampa': 'missed-calls-ai-text-back-tampa-contractors',
+  'plumbing-website-design-tampa': 'missed-calls-ai-text-back-tampa-contractors',
+  'roofing-website-design-tampa': 'missed-calls-ai-text-back-tampa-contractors',
+  'electrician-website-design-tampa': 'missed-calls-ai-text-back-tampa-contractors',
+  'pest-control-website-design-tampa': 'missed-calls-ai-text-back-tampa-contractors',
+  'lawn-care-website-design-tampa': 'missed-calls-ai-text-back-tampa-contractors',
+  'Florida-Government-Website-Design-Services': 'ada-website-compliance-florida-local-government',
+};
+
 export default async function IndustryPage({ params }) {
   const { industry } = await params;
   const p = industryBySlug(industry);
   if (!p) notFound();
   const proof = p.key === 'SmallBusiness' ? QUOTES.ysf : QUOTES.pims;
+  const related = RELATED[p.slug] ? postBySlug(RELATED[p.slug]) : null;
   const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: p.faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
 
   return (
@@ -154,6 +167,13 @@ export default async function IndustryPage({ params }) {
             <h2 className="h3">{p.faqH}</h2>
             <Faqs items={p.faqs} />
             <p className="small muted">More answers on our <Link href="/web-design-faq-tampa">FAQ page</Link>, or see <Link href="/pricing">pricing</Link>.</p>
+            {related && (
+              <Link href={'/blogs/post/' + related.slug} className="card-raised card-tight stack gap-2" style={{ color: 'var(--ink)' }}>
+                <span className="tiny muted">Related reading</span>
+                <span style={{ fontWeight: 600 }}>{related.title}</span>
+                <span className="small accent">Read the post →</span>
+              </Link>
+            )}
           </div>
         </div>
       </section>

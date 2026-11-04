@@ -40,6 +40,7 @@ export default function Services() {
             <h2 className="h3">AI automation systems</h2>
             <p className="muted" style={{ fontSize: 17 }}>The part that answers when you can&apos;t. These run on our own site, so you can try them before you buy.</p>
             <Link href="/#demos-h" className="btn btn-primary" style={{ alignSelf: 'flex-start' }}>Try the live demos</Link>
+            <Link href="/blogs/post/missed-calls-ai-text-back-tampa-contractors" className="textlink">How missed-call text-back works →</Link>
           </div>
           <ul className="list-clean side stack gap-3">
             {AI_ITEMS.map(([t, d]) => <li key={t} className="card-raised card-tight"><p style={{ fontWeight: 600 }}>{t}</p><p className="small muted" style={{ marginTop: 4 }}>{d}</p></li>)}

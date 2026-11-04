@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CtaBand } from '@/components/Blocks';
+import { Rich } from '@/components/RichText';
 import { POSTS, postBySlug, fmtDate } from '@/lib/posts';
 import { SITE } from '@/lib/site';
 
@@ -15,12 +16,20 @@ export async function generateMetadata({ params }) {
 }
 
 function Block({ b }) {
-  const [t, v] = b;
+  const [t, v, rows] = b;
   if (t === 'h2') return <h2>{v}</h2>;
   if (t === 'h3') return <h3>{v}</h3>;
-  if (t === 'ul') return <ul>{v.map((x) => <li key={x}>{x}</li>)}</ul>;
-  if (t === 'ol') return <ol>{v.map((x) => <li key={x}>{x}</li>)}</ol>;
-  return <p>{v}</p>;
+  if (t === 'ul') return <ul>{v.map((x, i) => <li key={i}><Rich text={x} /></li>)}</ul>;
+  if (t === 'ol') return <ol>{v.map((x, i) => <li key={i}><Rich text={x} /></li>)}</ol>;
+  if (t === 'quote') return <blockquote className="post-quote"><Rich text={v} /></blockquote>;
+  if (t === 'note') return <p className="small"><em><Rich text={v} /></em></p>;
+  if (t === 'table') return (
+    <div className="post-table"><table>
+      <thead><tr>{v.map((h) => <th key={h} scope="col">{h}</th>)}</tr></thead>
+      <tbody>{rows.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}><Rich text={c} /></td>)}</tr>)}</tbody>
+    </table></div>
+  );
+  return <p><Rich text={v} /></p>;
 }
 
 export default async function Post({ params }) {
