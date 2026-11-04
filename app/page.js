@@ -24,7 +24,7 @@ function jsonLd() {
     '@type': 'ProfessionalService',
     name: SITE.name,
     url: SITE.url,
-    telephone: '+1-813-816-2669',
+    telephone: '+1-813-677-9707',
     image: SITE.url + '/images/manny-potter.jpg',
     founder: { '@type': 'Person', name: SITE.founder, sameAs: [SITE.linkedin] },
     address: { '@type': 'PostalAddress', addressLocality: 'Tampa', addressRegion: 'FL', addressCountry: 'US' },
