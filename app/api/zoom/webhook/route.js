@@ -5,7 +5,7 @@ import { SITE, MISSED_CALL_TEXT } from '@/lib/site';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-// Zoom Phone webhook. Subscribed event: phone.callee_missed.
+// Zoom Phone webhook. Subscribed events: phone.callee_missed and phone.voicemail_received.
 // Emails Manny the caller's number plus a ready-to-copy text, and saves the call as a lead.
 const hmac = (secret, data) => crypto.createHmac('sha256', secret).update(data).digest('hex');
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -38,12 +38,15 @@ export async function POST(req) {
   const ok = sig.length === expected.length && crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
   if (!ok || !fresh) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-  if (body.event !== 'phone.callee_missed') return Response.json({ ok: true, ignored: body.event });
+  console.log('[zoom] event', body.event);
+  if (!['phone.callee_missed', 'phone.voicemail_received'].includes(body.event)) return Response.json({ ok: true, ignored: body.event });
 
+  // A missed call and its voicemail share one call_id, so the duplicate check below sends only one alert.
   const o = body.payload?.object || {};
   const caller = o.caller || {};
-  const number = caller.phone_number || caller.number || '';
-  const name = caller.name || caller.user_name || caller.display_name || '';
+  const number = caller.phone_number || caller.number || o.caller_number || '';
+  const name = caller.name || caller.user_name || caller.display_name || o.caller_name || '';
+  const voicemail = body.event === 'phone.voicemail_received';
   const callId = String(o.call_id || o.id || `${number}-${o.date_time || o.ringing_start_time || ''}`);
   const when = new Date(o.date_time || o.ringing_start_time || body.event_ts || Date.now());
 
@@ -53,10 +56,10 @@ export async function POST(req) {
 
   const shown = pretty(number) || 'Unknown number';
   const blocked = !String(number).replace(/\D/g, '');
-  await insertRow('leads', { source: 'call', name, email: '', phone: blocked ? '' : shown, message: 'Missed call', page: 'Zoom Phone', meta: { call_id: callId, at: when.toISOString(), raw_number: number } });
+  await insertRow('leads', { source: 'call', name, email: '', phone: blocked ? '' : shown, message: voicemail ? 'Missed call, left a voicemail' : 'Missed call', page: 'Zoom Phone', meta: { call_id: callId, at: when.toISOString(), raw_number: number } });
 
   const whenText = when.toLocaleString('en-US', { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-  const subject = `Missed call: ${shown}${name ? ` (${name})` : ''}`;
+  const subject = `Missed call${voicemail ? ' + voicemail' : ''}: ${shown}${name ? ` (${name})` : ''}`;
   const text = [
     `Missed call from ${shown}${name ? ` (${name})` : ''}`,
     whenText,
