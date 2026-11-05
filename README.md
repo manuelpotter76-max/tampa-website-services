@@ -19,6 +19,7 @@ npm run dev
 | ANTHROPIC_MODEL | no | Defaults to claude-haiku-5-5 |
 | PAGESPEED_API_KEY | recommended | Google PageSpeed quota for the audit |
 | RESEND_API_KEY, LEAD_NOTIFY_EMAIL, LEAD_FROM_EMAIL | optional | Email Manny on each new lead |
+| ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET | for Zoho CRM | Self Client in api-console.zoho.com; connect at /admin/zoho |
 | ZOOM_WEBHOOK_SECRET | for missed-call alerts | Secret Token from the Zoom Marketplace app |
 | CRON_SECRET | for chat emails | Lets Vercel Cron call /api/cron/chat-transcripts |
 | NEXT_PUBLIC_CONTACT_EMAIL | optional | Overrides hello@tampawebsiteservices.com |

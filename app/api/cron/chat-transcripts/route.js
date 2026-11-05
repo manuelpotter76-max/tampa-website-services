@@ -1,5 +1,6 @@
 import { selectRows, updateRow, sendEmail } from '@/lib/db';
-import { chatTranscriptEmail } from '@/lib/transcript';
+import { chatTranscriptEmail, contactsIn } from '@/lib/transcript';
+import { pushLeadToZoho } from '@/lib/zoho';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -32,6 +33,12 @@ export async function GET(req) {
     if (totalVisitorMsgs < MIN_VISITOR_MESSAGES) { skipped++; continue; }
 
     const ok = await sendEmail({ to, ...chatTranscriptEmail(chat, already) });
+    // Chats where the visitor left an email or phone also go to Zoho CRM (anonymous chats don't).
+    const { emails, phones } = contactsIn(msgs);
+    if (ok && (emails.length || phones.length)) {
+      const transcript = msgs.slice(already).map((m) => `${m.role === 'user' ? 'Visitor' : 'AI assistant'}: ${m.content}`).join('\n\n');
+      await pushLeadToZoho({ email: emails[0] || '', phone: phones[0] || '', source: 'Website - Chat', noteTitle: already ? 'Website chat (continued)' : 'Website chat', note: `Page: ${chat.page || '/'}\n\n${transcript}` });
+    }
     if (ok) {
       await updateRow('chats', chat.id, { emailed_msg_count: msgs.length, emailed_at: new Date().toISOString() });
       sent++;

@@ -1,6 +1,8 @@
 import { SMS_CONSENT_TEXT as SMS_TEXT } from '@/lib/consent';
 import { insertRow, notifyLead, rateLimited, clientIp, getRow, updateRow, sendEmail } from '@/lib/db';
 import { auditReportEmail, leadAlert } from '@/lib/report';
+import { pushLeadToZoho } from '@/lib/zoho';
+import { after } from 'next/server';
 
 export const runtime = 'nodejs';
 
@@ -47,5 +49,16 @@ export async function POST(req) {
   const who = name || email || phone;
   const subject = source === 'audit' && audit ? `Audit lead: ${who} scored ${audit.overall}/100${phone ? ' (call them)' : ''}` : `New ${source} lead: ${who}`;
   await notifyLead(subject, leadAlert(row, audit));
+
+  // Send to Zoho CRM, tagged Brand = Tampa Website Services.
+  const crmNote = source === 'audit' && audit
+    ? [`Website audit: ${audit.url}`, `Score: ${audit.overall}/100`, '', ...(audit.findings || []).map((f, i) => `${i + 1}. ${f.area}: ${f.text}`), phone ? '\nLeft a phone number and wants a walkthrough.' : ''].join('\n')
+    : [row.message && `Message:\n${row.message}`, row.website && `Website: ${row.website}`, row.sms_consent ? 'OK to text: yes' : '', `Page: ${row.page || 'n/a'}`].filter(Boolean).join('\n\n');
+  after(() => pushLeadToZoho({
+    name, email, phone, website: row.website,
+    source: source === 'audit' ? 'Website - Audit' : 'Website - Contact form',
+    noteTitle: source === 'audit' ? `Website audit${audit ? ` (${audit.overall}/100)` : ''}` : 'Contact form message',
+    note: crmNote,
+  }));
   return Response.json({ ok: true, stored: res.stored, reportSent });
 }

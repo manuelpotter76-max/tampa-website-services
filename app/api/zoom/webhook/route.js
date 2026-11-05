@@ -1,6 +1,8 @@
 import crypto from 'node:crypto';
+import { after } from 'next/server';
 import { insertRow, selectRows, sendEmail } from '@/lib/db';
 import { SITE, MISSED_CALL_TEXT } from '@/lib/site';
+import { pushLeadToZoho } from '@/lib/zoho';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -87,5 +89,6 @@ ${blocked ? '<p style="margin:20px 0 0;color:#334155">The caller hid their numbe
 </table></td></tr></table></body></html>`;
 
   await sendEmail({ to: process.env.LEAD_NOTIFY_EMAIL, subject, text, html });
+  if (!blocked) after(() => pushLeadToZoho({ name, phone: shown, source: 'Missed call', noteTitle: voicemail ? 'Missed call + voicemail' : 'Missed call', note: `Missed call on ${whenText}${voicemail ? '. They left a voicemail in Zoom.' : '.'}` }));
   return Response.json({ ok: true });
 }
