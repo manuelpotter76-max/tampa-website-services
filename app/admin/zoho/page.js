@@ -30,6 +30,9 @@ export default function ZohoSetup() {
           {res.brand?.ok
             ? <p>Brand field found ({res.brand.apiName}) with the &quot;{res.brandValue}&quot; option. New leads will be tagged with it.</p>
             : <p>Heads up: {res.brand?.error} {res.brand?.options?.length ? `Options found: ${res.brand.options.join(', ')}.` : ''}</p>}
+          {res.brand && (res.brand.statusOk
+            ? <p>Lead Status option &quot;{res.brand.leadStatus}&quot; found. New leads will start there.</p>
+            : <p>Heads up: Lead Status has no &quot;{res.brand.leadStatus}&quot; option{res.brand.statusOptions?.length ? ` (found: ${res.brand.statusOptions.join(', ')})` : ''}. New leads will be saved without a status until it&apos;s added.</p>)}
         </div>
       ) : <p className="error" role="alert">{res.error}</p>)}
     </section>
