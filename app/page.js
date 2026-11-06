@@ -12,7 +12,7 @@ import { POSTS, fmtDate } from '@/lib/posts';
 
 export const metadata = {
   title: { absolute: 'Tampa Website Services | Websites + AI Systems in Tampa Bay' },
-  description: 'Tampa web design with AI built in. Websites that answer, follow up and book the job. Try the free AI audit, the AI concierge and missed-call text-back right on the page.',
+  description: 'Tampa web design with AI built in. Websites that answer, follow up and book the job. Try the free AI audit and the AI assistant right on the page.',
   alternates: { canonical: '/' },
 };
 

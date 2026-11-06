@@ -38,7 +38,7 @@ export default function Services() {
           <div className="side stack gap-4">
             <span className="kicker-num">02 · THE AI</span>
             <h2 className="h3">AI automation systems</h2>
-            <p className="muted" style={{ fontSize: 17 }}>The part that answers when you can&apos;t. These run on our own site, so you can try them before you buy.</p>
+            <p className="muted" style={{ fontSize: 17 }}>The part that answers when you can&apos;t. Our AI assistant runs on this site, so you can try it before you buy.</p>
             <Link href="/#demos-h" className="btn btn-primary" style={{ alignSelf: 'flex-start' }}>Try the live demos</Link>
             <Link href="/blogs/post/missed-calls-ai-text-back-tampa-contractors" className="textlink">How missed-call text-back works →</Link>
           </div>
