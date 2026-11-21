@@ -130,7 +130,7 @@ export default function Home() {
         <div className="grow stack gap-5">
           <p className="eyebrow">Meet the founder</p>
           <h2 id="about-h" className="h2">I&apos;m Manny Potter.</h2>
-          <p className="lead" style={{ maxWidth: 600 }}>I&apos;ve been building websites for Tampa businesses for over fifteen years. Now every site I build comes with the AI that answers, follows up and books the job for you.</p>
+          <p className="lead" style={{ maxWidth: 600 }}>I&apos;m a growth marketer with over 15 years in digital marketing: lead generation, SEO and paid ads. Now every site I build comes with the AI that answers, follows up and books the job for you.</p>
           <div className="row gap-3">
             <Link href="/about-tampa-website-services" className="btn btn-primary">More about me</Link>
             <a href={SITE.linkedin} className="btn btn-secondary">Connect on LinkedIn</a>

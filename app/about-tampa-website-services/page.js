@@ -38,7 +38,7 @@ export default function About() {
 
       <section className="container section stack gap-6 narrow" aria-labelledby="why-h">
         <h2 id="why-h" className="h2">Why I do this</h2>
-        <p className="muted" style={{ fontSize: 17 }}>I&apos;m a digital marketing professional with over 15 years of experience building strategies that help businesses grow, generate leads and increase revenue. My background covers digital advertising, lead generation, SEO, branding, marketing automation and performance analytics.</p>
+        <p className="muted" style={{ fontSize: 17 }}>I&apos;m a growth marketer with over 15 years in digital marketing, building strategies that help businesses grow, generate leads and increase revenue. My background covers digital advertising, lead generation, SEO, branding, marketing automation and performance analytics.</p>
         <ul className="list-clean row gap-2" aria-label="Industries I've worked in">
           {['Home improvement', 'Healthcare', 'Legal', 'Automotive', 'Home services'].map((x) => <li key={x} className="chip">{x}</li>)}
         </ul>
