@@ -1,4 +1,4 @@
-import { insertRow, rateLimited, clientIp } from '@/lib/db';
+import { insertRow, rateLimited, clientIp, notifyLead } from '@/lib/db';
 import { SITE, PRICES } from '@/lib/site';
 
 export const runtime = 'nodejs';
@@ -23,6 +23,14 @@ Rules:
 - Don't ask for sensitive personal information. If you don't know something, say so and offer the call.`;
 
 const FALLBACK = `Thanks for asking! I'm the Tampa Website Services AI assistant, and I'm getting set up. Websites start at $${PRICES.starter.toLocaleString()}, and our AI Growth System starts at $${PRICES.ai.toLocaleString()}. The fastest way to get a real answer is a quick call with Manny: ${SITE.bookingUrl}`;
+
+// Email Manny when the AI stops answering (no credits, bad key, outage), at most once an hour per server instance.
+let lastAlert = 0;
+async function alertChatDown(detail) {
+  if (Date.now() - lastAlert < 60 * 60 * 1000) return;
+  lastAlert = Date.now();
+  await notifyLead('Website chat is not answering', `The AI assistant on ${SITE.url} could not reach the model, so visitors are getting the canned reply with your booking link.\n\nWhat came back: ${String(detail).slice(0, 500)}\n\nMost common cause: Anthropic credits ran out (auto-reload is off). Top up in the Claude Console, then ask the chat a question to confirm.`);
+}
 
 export async function POST(req) {
   if (rateLimited(clientIp(req), 15)) return Response.json({ reply: 'Give me a second, that was a lot of messages at once. Try again in a minute.' }, { status: 429 });
@@ -55,10 +63,13 @@ export async function POST(req) {
         const text = (j.content || []).filter((c) => c.type === 'text').map((c) => c.text).join('\n').trim();
         if (text) reply = text;
       } else {
-        console.error('[chat] model error', r.status, await r.text());
+        const detail = await r.text();
+        console.error('[chat] model error', r.status, detail);
+        await alertChatDown(r.status + ' ' + detail);
       }
     } catch (e) {
       console.error('[chat] request failed', e);
+      await alertChatDown(e?.message || e);
     }
   }
 

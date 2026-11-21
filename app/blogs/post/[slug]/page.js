@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const p = postBySlug(slug);
   if (!p) return {};
-  return { title: p.title, description: p.description, alternates: { canonical: '/blogs/post/' + p.slug }, openGraph: { type: 'article', title: p.title, description: p.description, publishedTime: p.date } };
+  return { title: p.title, description: p.description, alternates: { canonical: '/blogs/post/' + p.slug }, openGraph: { type: 'article', siteName: 'Tampa Website Services', locale: 'en_US', url: '/blogs/post/' + p.slug, title: p.title, description: p.description, publishedTime: p.date } };
 }
 
 function Block({ b }) {
@@ -36,7 +36,7 @@ export default async function Post({ params }) {
   const { slug } = await params;
   const p = postBySlug(slug);
   if (!p) notFound();
-  const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, description: p.description, datePublished: p.date, author: { '@type': 'Person', name: SITE.founder }, publisher: { '@type': 'Organization', name: SITE.name }, mainEntityOfPage: SITE.url + '/blogs/post/' + p.slug };
+  const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, description: p.description, datePublished: p.date, author: { '@type': 'Person', name: SITE.founder }, publisher: { '@type': 'Organization', name: SITE.name }, mainEntityOfPage: SITE.url + '/blogs/post/' + p.slug, image: SITE.url + '/blogs/post/' + p.slug + '/opengraph-image' };
   const more = POSTS.filter((x) => x.slug !== p.slug).slice(0, 3);
   return (
     <>

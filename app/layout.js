@@ -14,7 +14,7 @@ export const metadata = {
   metadataBase: new URL(SITE.url),
   title: { default: 'Tampa Website Services | Websites + AI Systems in Tampa Bay', template: '%s | Tampa Website Services' },
   description: 'Tampa web design with AI built in. Websites that answer, follow up and book the job for HVAC, plumbing, roofing, med spas, local businesses and Florida government.',
-  openGraph: { siteName: SITE.name, type: 'website', locale: 'en_US', images: ['/images/manny-potter.jpg'] },
+  openGraph: { siteName: SITE.name, type: 'website', locale: 'en_US' },
   twitter: { card: 'summary_large_image' },
 };
 

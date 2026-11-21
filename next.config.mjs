@@ -10,6 +10,11 @@ const nextConfig = {
       { source: '/faq', destination: '/web-design-faq-tampa', permanent: true },
       { source: '/privacy', destination: '/privacy-policy', permanent: true },
       { source: '/home-services-website-design-tampa', destination: '/small-business-website-design-in-tampa-bay', permanent: true },
+      // Old Zoho blog tag, category, paging and feed URLs that Google still has indexed.
+      { source: '/blogs/tag/:tag*', destination: '/blogs', permanent: true },
+      { source: '/blogs/page/:n*', destination: '/blogs', permanent: true },
+      { source: '/blogs/feed', destination: '/blogs', permanent: true },
+      { source: '/blogs/:cat(tampa-web-design|small-business-web-design|website-conversion|website-tips|Uncategorized)', destination: '/blogs', permanent: true },
     ];
   },
   async headers() {
